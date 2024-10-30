@@ -1,0 +1,22 @@
+# Ambiente virtual do Pipenv
+.venv/
+
+# Bytecode do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.pid
+*.swp
+*.swo
+
+# Configurações do IDE
+.vscode/
+.idea/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
