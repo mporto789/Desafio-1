@@ -1,11 +1,11 @@
-from sqlite3 import connect, Connection, Row, Cursor
-from flask import Flask, jsonify, Response, request, send_from_directory
+import os
 from datetime import datetime, timedelta
-from sklearn.linear_model import LinearRegression
+from sqlite3 import connect, Connection, Row
+
 import numpy as np
 import pandas as pd
-import os
-
+from flask import Flask, jsonify, Response, request, send_from_directory
+from sklearn.linear_model import LinearRegression
 
 # Banco de Dados
 DATABASE: str = "database.db"
