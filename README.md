@@ -30,3 +30,8 @@ Certifique-se de ter o Python instalado em sua máquina. Este projeto requer os 
 
    ```bash
    pip install Flask pandas numpy scikit-learn
+   ```
+### Quando tudo estiver instalado, Rode o Servidor:
+   ```bash
+   pipenv run python src/server.py
+   ```
