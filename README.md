@@ -1,42 +1,32 @@
-# Template API Python
+# API de Gerenciamento de Produtos
 
-## Requisitos
-- Python instalado v3.9.X
-- Instalar Pipenv:
+Este projeto é uma API baseada em Flask para gerenciar produtos, relatórios de vendas e previsão de demanda. Ela interage com um banco de dados SQLite para fornecer funcionalidades de gerenciamento de produtos, relatórios de vendas e alertas de inventário.
 
-```bash
-pip install --user pipenv
-```
+## Funcionalidades
 
-## Configurar Banco de Dados
-- Baixe o arquivo _**database.db**_ localizado dentro da pasta do desafio.
-- Coloque esse arquivo dentro da raiz do projeto, ficando dessa forma:
+- Recuperar uma lista de produtos.
+- Obter relatórios detalhados de vendas para um período especificado.
+- Alertar sobre produtos próximos à data de validade.
+- Prever a demanda de produtos com base em dados históricos de vendas.
+- Servir páginas HTML para uma interface frontend amigável.
 
-```shell
-src/
-|-- server.py
-database.db # coloque o arquivo aqui
-...
-```
+## Começando
 
-## Rodar Projeto
+### Pré-requisitos
 
-Com o Python e o Pipenv instalado, rode o seguinte comando dentro da raiz do projeto para instalar as dependências.
+Certifique-se de ter o Python instalado em sua máquina. Este projeto requer os seguintes pacotes Python:
 
-```bash
-pipenv install
-```
+- Flask
+- pandas
+- numpy
+- scikit-learn
+- sqlite3 (biblioteca padrão, nenhuma instalação necessária)
 
-Se caso ainda o intepretador do python não ache os módulos instalados rode o comando:
+### Instalação
 
-```bash
-pipenv shell
-```
+1. Clone o repositório ou baixe os arquivos do código.
+2. Navegue até o diretório do projeto.
+3. Instale os pacotes necessários:
 
-Iniciar o projeto:
-
-```bash
-pipenv run python server.py
-```
-
-Agora sua API está rodando localmente em _**http://localhost:8080**_
+   ```bash
+   pip install Flask pandas numpy scikit-learn
