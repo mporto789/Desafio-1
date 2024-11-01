@@ -15,7 +15,7 @@ Este projeto é uma API baseada em Flask para gerenciar produtos, relatórios de
 ### Pré-requisitos
 
 Certifique-se de ter o Python instalado em sua máquina. Este projeto requer os seguintes pacotes Python:
-
+- PyCharm (Não é necessário, mas Recomendado)
 - Flask
 - pandas
 - numpy
