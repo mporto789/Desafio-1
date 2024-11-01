@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #2c2c2c; /* Fundo escuro */
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #3d3d3d; /* Fundo da tabela */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #5a5a5a; /* Cabeçalho da tabela */
+        }
+        tr:nth-child(even) {
+            background-color: #4c4c4c; /* Linhas pares com fundo diferente */
+        }
+        tr:hover {
+            background-color: #666; /* Cor ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Produtos</h1>
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Categoria ID</th>
+                <th>Data de Cadastro</th>
+                <th>Data de Validade</th>
+                <th>Estoque Atual</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados dos produtos serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para buscar produtos da API
+        async function fetchProducts() {
+            try {
+                const response = await fetch('http://127.0.0.1:3088/api/products');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar produtos');
+                }
+                const products = await response.json();
+                // Ordena os produtos pelo estoque em ordem decrescente
+                products.sort((a, b) => b.estoqueAtual - a.estoqueAtual);
+                displayProducts(products);
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        // Função para exibir produtos na tabela
+        function displayProducts(products) {
+            const tableBody = document.querySelector('#productsTable tbody');
+            tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.nome}</td>
+                    <td>${product.categoriaId}</td>
+                    <td>${new Date(product.dataCadastro).toLocaleDateString()}</td>
+                    <td>${new Date(product.dataValidade).toLocaleDateString()}</td>
+                    <td>${product.estoqueAtual}</td>
+                    <td>R$ ${product.preco.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Chama a função para buscar produtos ao carregar a página
+        fetchProducts();
+    </script>
+</body>
+</html>

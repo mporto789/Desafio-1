@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos em Risco de Expiração</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .expiring {
+            background-color: #ffcc99; /* Laranja para produtos próximos da expiração */
+        }
+        .expired {
+            background-color: #ffcccc; /* Vermelho para produtos já expirados */
+            color: black; /* Texto em preto para melhor legibilidade */
+        }
+        .safe {
+            background-color: #ccffcc; /* Verde claro para produtos que estão seguros */
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Produtos em Risco de Expiração</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Buscar por nome..." oninput="searchProducts()">
+        <button onclick="sortProducts('asc')">Ordenar por Data (Ascendente)</button>
+        <button onclick="sortProducts('desc')">Ordenar por Data (Descendente)</button>
+    </div>
+    <table id="expiringProductsTable">
+        <thead>
+            <tr>
+                <th>Nome do Produto</th>
+                <th>Estoque Atual</th>
+                <th>Data de Validade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados dos produtos expiring serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        let expiringProducts = []; // Armazena a lista de produtos para pesquisa e ordenação
+
+        // Função para buscar produtos próximos da expiração
+        async function fetchExpiringProducts() {
+            try {
+                const response = await fetch('http://127.0.0.1:3088/api/expiring_products_alert');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar produtos próximos da expiração');
+                }
+                expiringProducts = await response.json(); // Armazena os produtos
+                displayExpiringProducts(expiringProducts);
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao buscar produtos próximos da expiração. Tente novamente mais tarde.');
+            }
+        }
+
+        // Função para exibir produtos na tabela
+        function displayExpiringProducts(products) {
+            const tableBody = document.querySelector('#expiringProductsTable tbody');
+            tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                const today = new Date();
+                const expiryDate = new Date(product.dataValidade);
+
+                // Define a classe com base na proximidade da data de validade
+                if (expiryDate < today) {
+                    row.className = 'expired'; // Produto já expirado
+                } else if ((expiryDate - today) <= (7 * 24 * 60 * 60 * 1000)) {
+                    row.className = 'expiring'; // Produto prestes a expirar
+                } else {
+                    row.className = 'safe'; // Produto seguro
+                }
+
+                row.innerHTML = `
+                    <td>${product.nome}</td>
+                    <td>${product.estoqueAtual}</td>
+                    <td>${expiryDate.toLocaleDateString('pt-BR')}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Função para buscar produtos por nome
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredProducts = expiringProducts.filter(product =>
+                product.nome.toLowerCase().includes(searchTerm)
+            );
+            displayExpiringProducts(filteredProducts);
+        }
+
+        // Função para ordenar produtos por data de validade
+        function sortProducts(order) {
+            const sortedProducts = [...expiringProducts]; // Copia a lista de produtos
+            sortedProducts.sort((a, b) => {
+                const dateA = new Date(a.dataValidade);
+                const dateB = new Date(b.dataValidade);
+                return order === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+            displayExpiringProducts(sortedProducts);
+        }
+
+        // Chama a função para buscar produtos ao carregar a página
+        fetchExpiringProducts();
+    </script>
+</body>
+</html>

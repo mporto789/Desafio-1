@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Garibaldi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://s3.static.brasilescola.uol.com.br/be/2023/05/oferta-procura-livre-mercado.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .welcome-message {
+            margin: 10px 0;
+            font-size: 1.2em;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .section-description {
+            margin: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left; /* Alinhamento à esquerda para melhor leitura */
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #28a745; /* Verde para botões */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+            width: 300px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bem-vindo ao Mercado Garibaldi</h1>
+    </header>
+
+    <div class="welcome-message">
+        <script>
+            // Adiciona a funcionalidade para personalizar o nome do usuário
+            let userName = prompt("Por favor, insira seu nome:", "Gerente");
+            if (!userName) {
+                userName = "Gerente"; // Nome padrão caso o usuário não insira um
+            }
+            document.write(`Olá, ${userName}! Estamos felizes em tê-lo aqui. Este sistema foi projetado para ajudá-lo a gerenciar seus produtos, vendas e muito mais com eficiência.`);
+        </script>
+    </div>
+
+    <div class="section-description">
+        <h2>Seções do Sistema</h2>
+        <p><strong>Produtos:</strong> Aqui você pode visualizar todos os produtos disponíveis, adicionar novos itens e ajustar o estoque e os preços.</p>
+        <p><strong>Relatório de Vendas:</strong> Acesse relatórios detalhados das vendas para entender melhor o desempenho de seus produtos e fazer ajustes estratégicos.</p>
+        <p><strong>Produtos em Risco de Expiração:</strong> Monitore produtos que estão se aproximando da data de validade, para garantir que seu estoque permaneça fresco e relevante.</p>
+        <p><strong>Previsão de Demanda:</strong> Utilize ferramentas de previsão para planejar o estoque e atender à demanda de forma mais eficaz.</p>
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='/products'">Gerenciar Produtos</button>
+        <button onclick="window.location.href='/sales_report'">Ver Relatório de Vendas</button>
+        <button onclick="window.location.href='/expiring_products'">Produtos em Risco de Expiração</button>
+        <button onclick="window.location.href='/demand_forecast'">Previsão de Demanda</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Mercado Garibaldi - Todos os direitos reservados</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            margin: 10px 0;
+            width: 300px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Relatório de Vendas</h1>
+
+    <form id="searchForm">
+        <input type="text" id="searchName" placeholder="Pesquisar pelo nome do produto" />
+        <select id="sortBy">
+            <option value="quantidade_vendida">Ordenar por Quantidade Vendida</option>
+            <option value="total_vendas">Ordenar por Total de Vendas</option>
+            <option value="estoqueAtual">Ordenar por Estoque Atual</option>
+        </select>
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <table id="salesReportTable">
+        <thead>
+            <tr>
+                <th>Nome do Produto</th>
+                <th>Estoque Atual</th>
+                <th>Quantidade Vendida</th>
+                <th>Total de Vendas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados do relatório de vendas serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para buscar o relatório de vendas da API
+        async function fetchSalesReport(dataValidade, searchName, sortBy) {
+            try {
+                const response = await fetch(`http://127.0.0.1:3088/api/sales_report?dataValidade=${dataValidade}&search_name=${searchName}&sort_by=${sortBy}`);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar relatório de vendas');
+                }
+                const salesReport = await response.json();
+                displaySalesReport(salesReport);
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        // Função para exibir o relatório de vendas na tabela
+        function displaySalesReport(salesReport) {
+            const tableBody = document.querySelector('#salesReportTable tbody');
+            tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+            salesReport.forEach(report => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.nome_produto}</td>
+                    <td>${report.estoqueAtual}</td>
+                    <td>${report.quantidade_vendida}</td>
+                    <td>R$ ${report.total_vendas.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Chama a função para buscar o relatório ao submeter o formulário
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+            const dataValidade = '01-01-2024'; // Você pode definir isso de acordo com a necessidade
+            const searchName = document.getElementById('searchName').value;
+            const sortBy = document.getElementById('sortBy').value;
+            fetchSalesReport(dataValidade, searchName, sortBy);
+        });
+
+        // Chama a função para buscar o relatório ao carregar a página
+        window.onload = function() {
+            const dataValidade = '01-01-2024'; // Defina a data de validade padrão
+            fetchSalesReport(dataValidade, '', 'quantidade_vendida'); // Chama com os valores padrões
+        };
+    </script>
+</body>
+</html>

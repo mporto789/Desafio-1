@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsão de Demanda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #2c2c2c; /* Fundo escuro */
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #3d3d3d; /* Fundo da tabela */
+            margin-bottom: 20px; /* Espaçamento entre as tabelas */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center; /* Centraliza o texto na tabela */
+        }
+        th {
+            background-color: #5a5a5a; /* Cabeçalho da tabela */
+        }
+        tr:nth-child(even) {
+            background-color: #4c4c4c; /* Linhas pares com fundo diferente */
+        }
+        tr:hover {
+            background-color: #666; /* Cor ao passar o mouse */
+        }
+        h1 {
+            margin-bottom: 20px; /* Espaçamento abaixo do título */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Previsão de Demanda</h1>
+    <table id="forecastTable">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Domingo</th>
+                <th>Segunda</th>
+                <th>Terça</th>
+                <th>Quarta</th>
+                <th>Quinta</th>
+                <th>Sexta</th>
+                <th>Sábado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados da previsão serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para buscar a previsão de demanda da API
+        async function fetchDemandForecast() {
+            try {
+                const response = await fetch('http://127.0.0.1:3088/api/demand_forecast');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar previsão de demanda');
+                }
+                const forecasts = await response.json();
+                displayForecast(forecasts);
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        // Função para exibir previsão de demanda na tabela
+        function displayForecast(forecasts) {
+            const tableBody = document.querySelector('#forecastTable tbody');
+            tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+            forecasts.forEach(forecast => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${forecast.product_id}</td>
+                    <td>${forecast.forecast[0] || 0}</td>
+                    <td>${forecast.forecast[1] || 0}</td>
+                    <td>${forecast.forecast[2] || 0}</td>
+                    <td>${forecast.forecast[3] || 0}</td>
+                    <td>${forecast.forecast[4] || 0}</td>
+                    <td>${forecast.forecast[5] || 0}</td>
+                    <td>${forecast.forecast[6] || 0}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Chama a função para buscar previsão de demanda ao carregar a página
+        fetchDemandForecast();
+    </script>
+</body>
+</html>
